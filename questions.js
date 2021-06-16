@@ -1,10 +1,21 @@
-const questions = [
+const menuChoices = [
 	{
-		type: "input",
-		name: "name",
-		value: "What is your name?",
-		default: "Default",
+		type: "list",
+		name: "menuChoice",
+		message: "What would you like to do?",
+		choices: [
+			"View All Employees",
+			"View all Employees by Department",
+			"View all Employees by Manager",
+			"Add Employee",
+			"Remove Employe",
+			"Update Employee Role",
+			"Update Employee Manager",
+			"View All Roles",
+			"Add Role",
+			"Remove Role",
+		],
 	},
 ];
 
-module.exports = questions;
+module.exports = menuChoices;
