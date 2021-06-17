@@ -9,20 +9,6 @@ const {
 const { menuChoices } = require("./questions");
 const mysql = require("mysql");
 
-const connection = mysql.createConnection({
-	host: "localhost",
-	port: 3306,
-	user: "root",
-	password: "", //
-	database: "employee",
-});
-const afterConnect = () => {};
-
-// connection.connect((err) => {
-// 	if (err) throw err; //
-// 	console.log(`Connected as id ${connection.threadId}`);
-// 	afterConnect();
-// });
 const init = () => {
 	inquirerMainPrompt();
 };

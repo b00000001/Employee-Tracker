@@ -1,5 +1,6 @@
 const inquirer = require("inquirer");
 const mysql = require("mysql");
+const { Employee } = require("./employee");
 const { menuChoices, addEmployeePrompt } = require("./questions");
 const connection = mysql.createConnection({
 	host: "localhost",
@@ -17,14 +18,17 @@ const viewEmployees = (mainMenu) => {
 };
 const addEmployee = (mainMenu) => {
 	inquirer.prompt(addEmployeePrompt).then((res) => {
-		connection.query(
-			`INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUE ('${res.employeeName}', 'Doe', 1002, 490);`
+		res.roleId = 100;
+		res.managerId = 2001;
+		console.log(res);
+		const newEmployee = new Employee(
+			res.firstName,
+			res.lastName,
+			res.roleId,
+			res.managerId
 		);
-		connection.query("SELECT * FROM employee", (err, res) => {
-			if (err) throw err;
-			console.table(res);
-			mainMenu();
-		});
+		newEmployee.addToDb();
+		mainMenu();
 	});
 };
 const viewEmployeeByDept = () => {};
