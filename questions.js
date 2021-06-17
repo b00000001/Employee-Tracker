@@ -21,7 +21,7 @@ const menuChoices = [
 const addEmployee = [
 	{
 		type: "input",
-		name: "employeeName",
+		name: "employeeName`",
 		message: "Please enter the name of the employee to add.",
 		default: "John Doe",
 	},
