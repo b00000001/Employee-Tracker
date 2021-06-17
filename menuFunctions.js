@@ -51,7 +51,6 @@ const removeEmployee = (mainMenu) => {
 				},
 			])
 			.then((res) => {
-				console.log(res.employeeChosen.split(" "));
 				console.log(`Deleting record for ${res.employeeChosen}`);
 				connection.query(
 					"DELETE FROM employee WHERE ?",
@@ -64,22 +63,5 @@ const removeEmployee = (mainMenu) => {
 			});
 	});
 };
-
-// const deleteEmployee = (res) => {
-//     connection.query('DELETE FROM employee WHERE ?', {
-//         empID: res.id
-//     }, (err, res) => {})
-// }
-
-/* "View All Employees",
-			"View all Employees by Department",
-			"View all Employees by Manager",
-			"Add Employee",
-			"Remove Employee",
-			"Update Employee Role",
-			"Update Employee Manager",
-			"View All Roles",
-			"Add Role",
-			"Remove Role", */
 
 module.exports = { viewEmployees, addEmployee, removeEmployee };
