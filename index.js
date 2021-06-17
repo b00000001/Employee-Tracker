@@ -1,8 +1,12 @@
 console.log("Hello");
 const inquirer = require("inquirer");
 const inquire = require("inquirer");
-const { viewEmployees } = require("./menuFunctions");
-const { menuChoices, addEmployee, removeEmployee } = require("./questions");
+const {
+	viewEmployees,
+	addEmployee,
+	removeEmployee,
+} = require("./menuFunctions");
+const { menuChoices } = require("./questions");
 const mysql = require("mysql");
 
 const connection = mysql.createConnection({
@@ -31,26 +35,13 @@ const inquirerMainPrompt = () => {
 const handleMenuChoices = (res) => {
 	switch (res.menuChoice) {
 		case "View All Employees":
-			viewEmployees();
-			inquirerMainPrompt();
+			viewEmployees(inquirerMainPrompt);
 			break;
 		case "Add Employee":
-			inquirer.prompt(addEmployee).then((res) => {
-				connection.query(
-					`INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUE ('${res.employeeName}', 'Doe', 1002, 490);`
-				);
-				console.log(res);
-				connection.query("SELECT * FROM employee", (err, res) => {
-					if (err) throw err;
-					console.table(res);
-				});
-				connection.end();
-			});
+			addEmployee(inquirerMainPrompt);
 			break;
 		case "Remove Employee":
-			inquirer.prompt(removeEmployee).then((res) => {
-				console.log(res);
-			});
+			removeEmployee(inquirerMainPrompt);
 			break;
 		case "Update Employee Role":
 			break;

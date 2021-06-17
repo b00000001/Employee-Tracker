@@ -18,21 +18,13 @@ const menuChoices = [
 	},
 ];
 
-const addEmployee = [
+const addEmployeePrompt = [
 	{
 		type: "input",
-		name: "employeeName`",
+		name: "employeeName",
 		message: "Please enter the name of the employee to add.",
 		default: "John Doe",
 	},
 ];
 
-const removeEmployee = [
-	{
-		type: "input",
-		name: "employeeToRemove",
-		message: "Please select the Employee you wish to remove",
-	},
-];
-
-module.exports = { menuChoices, addEmployee, removeEmployee };
+module.exports = { menuChoices, addEmployeePrompt };
