@@ -22,7 +22,7 @@ const viewMenu = (mainMenu) => {
 				connection.query("SELECT * FROM employee", (err, res) => {
 					if (err) throw err;
 					console.table(res);
-					viewMenu();
+					viewMenu(mainMenu);
 				});
 			case "Role":
 				console.log("View Role");
@@ -60,18 +60,19 @@ const addMenu = (mainMenu) => {
 										console.table(res);
 									}
 								);
+								addMenu(mainMenu);
 							});
-							break;
 						case "Intern":
 							console.log("Add Employee Intern type");
 							break;
 						case "Employee":
 							console.log("Add Employee default type");
 							break;
-						case "Main Menu":
-							console.log("Exiting");
-							mainMenu();
+						case "Back":
+							addMenu(mainMenu);
+							break;
 						default:
+							console.log(res);
 							console.log("Error");
 					}
 				});
@@ -82,10 +83,12 @@ const addMenu = (mainMenu) => {
 			case "Department":
 				console.log("Add Department");
 				break;
-			case "Main Menu":
+			case "Back":
 				console.log("Exiting");
 				mainMenu();
+				break;
 			default:
+				console.log(res);
 				console.log("Error");
 		}
 

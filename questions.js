@@ -12,7 +12,7 @@ const addMenuPrompt = [
 		type: "list",
 		name: "typeToAdd",
 		message: "Please enter what you wish to add",
-		choices: ["Employee", "Role", "Department", "Main Menu"],
+		choices: ["Employee", "Role", "Department", "Back"],
 	},
 ];
 
@@ -29,7 +29,7 @@ const addEmployeePrompt = [
 		type: "list",
 		name: "employeeChoice",
 		message: "Please enter the type of employee you wish to add.",
-		choices: ["Employee", "Manager", "Intern", "Main Menu"],
+		choices: ["Employee", "Manager", "Intern", "Back"],
 	},
 ];
 
