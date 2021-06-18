@@ -26,7 +26,9 @@ const handleMenuChoices = (res) => {
 			deleteMenu(inquirerMainPrompt);
 			break;
 		case "Exit":
-			return "Exit";
+			console.log("Good Bye!");
+			process.exit();
+			break;
 		// case "View All Roles":
 		// 	break;
 		// case "Add Role":

@@ -39,7 +39,6 @@ const viewMenu = (mainMenu) => {
 	});
 };
 const addMenu = (mainMenu) => {
-	const query = "INSERT INTO employee SET ?";
 	inquirer.prompt(addMenuPrompt).then((res) => {
 		switch (res.typeToAdd) {
 			case "Employee":
@@ -47,19 +46,14 @@ const addMenu = (mainMenu) => {
 					switch (res.employeeChoice) {
 						case "Manager":
 							inquirer.prompt(managerQuestions).then((res) => {
-								console.log(res);
-								connection.query(
-									query,
-									{
-										first_name: res.managerFirstName,
-										last_name: res.managerLastName,
-										role_id: 1000,
-										manager_id: 15,
-									},
-									(err, res) => {
-										console.table(res);
-									}
+								const newEmployee = new Employee(
+									res.managerFirstName,
+									res.managerLastName,
+									1000,
+									15
 								);
+								newEmployee.addToDb();
+								console.log("Successfully Added Manager");
 								addMenu(mainMenu);
 							});
 						case "Intern":
@@ -72,7 +66,6 @@ const addMenu = (mainMenu) => {
 							addMenu(mainMenu);
 							break;
 						default:
-							console.log(res);
 							console.log("Error");
 					}
 				});
@@ -88,18 +81,8 @@ const addMenu = (mainMenu) => {
 				mainMenu();
 				break;
 			default:
-				console.log(res);
 				console.log("Error");
 		}
-
-		// const newEmployee = new Employee(
-		// 	res.firstName,
-		// 	res.lastName,
-		// 	res.roleId,
-		// 	res.managerId
-		// );
-		// newEmployee.addToDb();
-		// mainMenu();
 	});
 };
 const viewEmployeeByDept = () => {};

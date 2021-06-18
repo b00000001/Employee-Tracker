@@ -16,7 +16,6 @@ class Employee {
 			`INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUE ('${this.firstName}', '${this.lastName}', 100, 2001)`,
 			(err, res) => {
 				if (err) throw err;
-				console.log("Successfully added record.");
 			}
 		);
 	}
