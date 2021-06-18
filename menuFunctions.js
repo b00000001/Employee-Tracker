@@ -1,7 +1,13 @@
 const inquirer = require("inquirer");
 const mysql = require("mysql");
 const { Employee } = require("./employee");
-const { menuChoices, addEmployeePrompt } = require("./questions");
+const {
+	menuChoices,
+	viewMenuPrompts,
+	addMenuPrompt,
+	addEmployeePrompt,
+	managerQuestions,
+} = require("./questions");
 const connection = mysql.createConnection({
 	host: "localhost",
 	port: 3306,
@@ -9,31 +15,93 @@ const connection = mysql.createConnection({
 	password: "", //
 	database: "employee",
 });
-const viewEmployees = (mainMenu) => {
-	connection.query("SELECT * FROM employee", (err, res) => {
-		if (err) throw err;
-		console.table(res);
-		mainMenu();
+const viewMenu = (mainMenu) => {
+	inquirer.prompt(viewMenuPrompts).then((res) => {
+		switch (res.typeToView) {
+			case "Employee":
+				connection.query("SELECT * FROM employee", (err, res) => {
+					if (err) throw err;
+					console.table(res);
+					viewMenu();
+				});
+			case "Role":
+				console.log("View Role");
+				break;
+			case "Department":
+				console.log("View Dept");
+				break;
+			case "Main Menu":
+				mainMenu();
+			default:
+				console.log("error");
+				return "Error";
+		}
 	});
 };
-const addEmployee = (mainMenu) => {
-	inquirer.prompt(addEmployeePrompt).then((res) => {
-		res.roleId = 100;
-		res.managerId = 2001;
-		console.log(res);
-		const newEmployee = new Employee(
-			res.firstName,
-			res.lastName,
-			res.roleId,
-			res.managerId
-		);
-		newEmployee.addToDb();
-		mainMenu();
+const addMenu = (mainMenu) => {
+	const query = "INSERT INTO employee SET ?";
+	inquirer.prompt(addMenuPrompt).then((res) => {
+		switch (res.typeToAdd) {
+			case "Employee":
+				inquirer.prompt(addEmployeePrompt).then((res) => {
+					switch (res.employeeChoice) {
+						case "Manager":
+							inquirer.prompt(managerQuestions).then((res) => {
+								console.log(res);
+								connection.query(
+									query,
+									{
+										first_name: res.managerFirstName,
+										last_name: res.managerLastName,
+										role_id: 1000,
+										manager_id: 15,
+									},
+									(err, res) => {
+										console.table(res);
+									}
+								);
+							});
+							break;
+						case "Intern":
+							console.log("Add Employee Intern type");
+							break;
+						case "Employee":
+							console.log("Add Employee default type");
+							break;
+						case "Main Menu":
+							console.log("Exiting");
+							mainMenu();
+						default:
+							console.log("Error");
+					}
+				});
+				break;
+			case "Role":
+				console.log("Add Role");
+				break;
+			case "Department":
+				console.log("Add Department");
+				break;
+			case "Main Menu":
+				console.log("Exiting");
+				mainMenu();
+			default:
+				console.log("Error");
+		}
+
+		// const newEmployee = new Employee(
+		// 	res.firstName,
+		// 	res.lastName,
+		// 	res.roleId,
+		// 	res.managerId
+		// );
+		// newEmployee.addToDb();
+		// mainMenu();
 	});
 };
 const viewEmployeeByDept = () => {};
 const viewEmployeeByMgr = () => {};
-const removeEmployee = (mainMenu) => {
+const deleteMenu = (mainMenu) => {
 	const employeeArray = [];
 	connection.query("SELECT * FROM employee", (err, res) => {
 		if (err) throw err;
@@ -64,4 +132,4 @@ const removeEmployee = (mainMenu) => {
 	});
 };
 
-module.exports = { viewEmployees, addEmployee, removeEmployee };
+module.exports = { viewMenu, addMenu, deleteMenu };
