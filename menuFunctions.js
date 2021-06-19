@@ -8,8 +8,10 @@ const {
 	addEmployeePrompt,
 	managerQuestions,
 	addRole,
+	addDepartment,
 } = require("./questions");
 const Role = require("./role");
+const Department = require("./department");
 const connection = mysql.createConnection({
 	host: "localhost",
 	port: 3306,
@@ -35,7 +37,11 @@ const viewMenu = (mainMenu) => {
 				});
 				break;
 			case "Department":
-				console.log("View Dept");
+				connection.query("SELECT * FROM employee.department", (err, res) => {
+					if (err) throw err;
+					console.table(res);
+					viewMenu(mainMenu);
+				});
 				break;
 			case "Main Menu":
 				mainMenu();
@@ -87,7 +93,11 @@ const addMenu = (mainMenu) => {
 				});
 				break;
 			case "Department":
-				console.log("Add Department");
+				inquirer.prompt(addDepartment).then((res) => {
+					const newDept = new Department(res.depToAdd);
+					newDept.addToDb(res);
+					addMenu(mainMenu);
+				});
 				break;
 			case "Back":
 				console.log("Exiting");

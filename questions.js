@@ -44,6 +44,13 @@ const addRole = [
 		message: "Please enter the salary for this role.",
 	},
 ];
+const addDepartment = [
+	{
+		type: "input",
+		name: "deptToAdd",
+		message: "Please enter the department name",
+	},
+];
 
 const managerQuestions = [
 	{
@@ -70,4 +77,5 @@ module.exports = {
 	managerQuestions,
 	addMenuPrompt,
 	addRole,
+	addDepartment,
 };
