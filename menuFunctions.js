@@ -9,6 +9,7 @@ const {
 	managerQuestions,
 	addRole,
 } = require("./questions");
+const Role = require("./role");
 const connection = mysql.createConnection({
 	host: "localhost",
 	port: 3306,
@@ -79,13 +80,9 @@ const addMenu = (mainMenu) => {
 			case "Role":
 				console.log("Add Role");
 				inquirer.prompt(addRole).then((res) => {
-					console.log(res);
-					connection.query(
-						"INSERT INTO employee.role SET ?",
-						{ title: res.roleToAdd, salary: 10000, department_id: 2000 },
-						(err, res) => {}
-					);
-					console.log("Successfully added role");
+					console.log("Add Role", res);
+					const newRole = new Role(res.roleToAdd, res.roleSalary);
+					newRole.addToDb(res);
 					addMenu(mainMenu);
 				});
 				break;

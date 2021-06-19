@@ -38,6 +38,11 @@ const addRole = [
 		name: "roleToAdd",
 		message: "Please enter the type of role you wish to add",
 	},
+	{
+		type: "input",
+		name: "roleSalary",
+		message: "Please enter the salary for this role.",
+	},
 ];
 
 const managerQuestions = [
