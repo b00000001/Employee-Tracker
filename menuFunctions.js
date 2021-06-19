@@ -2,6 +2,7 @@ const inquirer = require("inquirer");
 const mysql = require("mysql");
 const { Employee } = require("./employee");
 const {
+	// Imports different variables that hold question sets.
 	menuChoices,
 	viewMenuPrompts,
 	addMenuPrompt,
@@ -19,6 +20,10 @@ const connection = mysql.createConnection({
 	password: "", //
 	database: "employee",
 });
+/* 
+-------------------------------------------------------------------------------
+								View Menu
+*/
 const viewMenu = (mainMenu) => {
 	inquirer.prompt(viewMenuPrompts).then((res) => {
 		switch (res.typeToView) {
@@ -45,12 +50,17 @@ const viewMenu = (mainMenu) => {
 				break;
 			case "Main Menu":
 				mainMenu();
+				break;
 			default:
 				console.log("error");
 				return "Error";
 		}
 	});
 };
+/* 
+-------------------------------------------------------------------------------
+								Main Menu
+*/
 const addMenu = (mainMenu) => {
 	inquirer.prompt(addMenuPrompt).then((res) => {
 		switch (res.typeToAdd) {
@@ -108,8 +118,10 @@ const addMenu = (mainMenu) => {
 		}
 	});
 };
-const viewEmployeeByDept = () => {};
-const viewEmployeeByMgr = () => {};
+/* 
+-------------------------------------------------------------------------------
+								Delete Menu
+*/
 const deleteMenu = (mainMenu) => {
 	const employeeArray = [];
 	connection.query("SELECT * FROM employee", (err, res) => {
