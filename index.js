@@ -29,18 +29,6 @@ const handleMenuChoices = (res) => {
 			console.log("Good Bye!");
 			process.exit();
 			break;
-		// case "View All Roles":
-		// 	break;
-		// case "Add Role":
-		// 	break;
-		// case "Remove Role":
-		// 	break;
-		// case "View all Departments":
-		// 	break;
-		// case "Add Departments":
-		// 	break;
-		// case "Remove Department":
-		// 	break;
 		default:
 			console.log("error");
 	}

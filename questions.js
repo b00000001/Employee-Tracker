@@ -32,6 +32,13 @@ const addEmployeePrompt = [
 		choices: ["Employee", "Manager", "Intern", "Back"],
 	},
 ];
+const addRole = [
+	{
+		type: "input",
+		name: "roleToAdd",
+		message: "Please enter the type of role you wish to add",
+	},
+];
 
 const managerQuestions = [
 	{
@@ -57,4 +64,5 @@ module.exports = {
 	viewMenuPrompts,
 	managerQuestions,
 	addMenuPrompt,
+	addRole,
 };

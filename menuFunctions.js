@@ -7,6 +7,7 @@ const {
 	addMenuPrompt,
 	addEmployeePrompt,
 	managerQuestions,
+	addRole,
 } = require("./questions");
 const connection = mysql.createConnection({
 	host: "localhost",
@@ -19,13 +20,18 @@ const viewMenu = (mainMenu) => {
 	inquirer.prompt(viewMenuPrompts).then((res) => {
 		switch (res.typeToView) {
 			case "Employee":
-				connection.query("SELECT * FROM employee", (err, res) => {
+				connection.query("SELECT * FROM employee.employee", (err, res) => {
 					if (err) throw err;
 					console.table(res);
 					viewMenu(mainMenu);
 				});
+				break;
 			case "Role":
-				console.log("View Role");
+				connection.query("SELECT * FROM employee.role", (err, res) => {
+					if (err) throw err;
+					console.table(res);
+					viewMenu(mainMenu);
+				});
 				break;
 			case "Department":
 				console.log("View Dept");
@@ -72,6 +78,16 @@ const addMenu = (mainMenu) => {
 				break;
 			case "Role":
 				console.log("Add Role");
+				inquirer.prompt(addRole).then((res) => {
+					console.log(res);
+					connection.query(
+						"INSERT INTO employee.role SET ?",
+						{ title: res.roleToAdd, salary: 10000, department_id: 2000 },
+						(err, res) => {}
+					);
+					console.log("Successfully added role");
+					addMenu(mainMenu);
+				});
 				break;
 			case "Department":
 				console.log("Add Department");
