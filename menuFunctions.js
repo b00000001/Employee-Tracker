@@ -75,22 +75,22 @@ const addMenu = (mainMenu) => {
 						},
 					])
 					.then((res) => {
-						console.log(res);
 						switch (res.employeeChoice) {
 							case "Manager":
 								inquirer.prompt(managerQuestions).then((res) => {
+									console.log(res);
 									const newEmployee = new Employee(
 										res.managerFirstName,
 										res.managerLastName,
-										1000,
 										res.selectedDepartment,
+										1000,
 										15
 									);
 									// newEmployee.getDepartment(); //to output the role ID
 									newEmployee.addToDb();
+									console.log("Successfully Added Manager");
 									addMenu(mainMenu);
 								});
-								console.log("Successfully Added Manager");
 								break;
 							case "Intern":
 								console.log("Add Employee Intern type");

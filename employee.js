@@ -14,7 +14,7 @@ class Employee {
 	}
 	addToDb() {
 		this.connection.query(
-			`INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUE ('${this.firstName}', '${this.lastName}', 100, 2001)`,
+			`INSERT INTO employee (first_name, last_name, role_id, department, manager_id) VALUE ('${this.firstName}', '${this.lastName}', ${this.department}, 100, 2001)`,
 			(err, res) => {
 				if (err) throw err;
 			}
