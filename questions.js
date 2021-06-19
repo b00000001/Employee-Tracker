@@ -1,3 +1,22 @@
+const mysql = require("mysql");
+const connection = mysql.createConnection({
+	host: "localhost",
+	port: 3306,
+	user: "root",
+	password: "", //
+	database: "employee",
+});
+
+const getDeptArray = () => {
+	const deptArr = [];
+	connection.query("SELECT name FROM employee.department", (err, res) => {
+		for (department of res) {
+			deptArr.push(department.name);
+		}
+	});
+	return deptArr;
+};
+
 const menuChoices = [
 	{
 		type: "list",
@@ -24,14 +43,6 @@ const viewMenuPrompts = [
 		choices: ["Employee", "Role", "Department", "Main Menu"],
 	},
 ];
-const addEmployeePrompt = [
-	{
-		type: "list",
-		name: "employeeChoice",
-		message: "Please enter the type of employee you wish to add.",
-		choices: ["Employee", "Manager", "Intern", "Back"],
-	},
-];
 const addRole = [
 	{
 		type: "input",
@@ -54,6 +65,12 @@ const addDepartment = [
 
 const managerQuestions = [
 	{
+		type: "list",
+		name: "selectedDepartment",
+		message: "Of what department?",
+		choices: getDeptArray(), // an array with all of the departments.
+	},
+	{
 		type: "input",
 		name: "managerFirstName",
 		message: "Please enter manager first name:",
@@ -63,16 +80,10 @@ const managerQuestions = [
 		name: "managerLastName",
 		message: "Please enter manager last name:",
 	},
-	{
-		type: "list",
-		name: "managerDept",
-		message: "What Department is this manager working in?",
-		choices: ["Engineering", "Executive", "Sales", "Retail"],
-	},
 ];
+
 module.exports = {
 	menuChoices,
-	addEmployeePrompt,
 	viewMenuPrompts,
 	managerQuestions,
 	addMenuPrompt,

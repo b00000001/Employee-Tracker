@@ -59,39 +59,53 @@ const viewMenu = (mainMenu) => {
 };
 /* 
 -------------------------------------------------------------------------------
-								Main Menu
+								Add Menu
 */
 const addMenu = (mainMenu) => {
 	inquirer.prompt(addMenuPrompt).then((res) => {
 		switch (res.typeToAdd) {
 			case "Employee":
-				inquirer.prompt(addEmployeePrompt).then((res) => {
-					switch (res.employeeChoice) {
-						case "Manager":
-							inquirer.prompt(managerQuestions).then((res) => {
-								const newEmployee = new Employee(
-									res.managerFirstName,
-									res.managerLastName,
-									1000,
-									15
-								);
-								newEmployee.addToDb();
+				inquirer
+					.prompt([
+						{
+							type: "list",
+							name: "employeeChoice",
+							message: "Please enter the type of employee you wish to add.",
+							choices: ["Employee", "Manager", "Intern", "Back"],
+						},
+					])
+					.then((res) => {
+						console.log(res);
+						switch (res.employeeChoice) {
+							case "Manager":
+								inquirer.prompt(managerQuestions).then((res) => {
+									const newEmployee = new Employee(
+										res.managerFirstName,
+										res.managerLastName,
+										1000,
+										res.selectedDepartment,
+										15
+									);
+									// newEmployee.getDepartment(); //to output the role ID
+									newEmployee.addToDb();
+									addMenu(mainMenu);
+								});
 								console.log("Successfully Added Manager");
+								break;
+							case "Intern":
+								console.log("Add Employee Intern type");
+								break;
+							case "Employee":
+								console.log("Add Employee default type");
 								addMenu(mainMenu);
-							});
-						case "Intern":
-							console.log("Add Employee Intern type");
-							break;
-						case "Employee":
-							console.log("Add Employee default type");
-							break;
-						case "Back":
-							addMenu(mainMenu);
-							break;
-						default:
-							console.log("Error");
-					}
-				});
+								break;
+							case "Back":
+								addMenu(mainMenu);
+								break;
+							default:
+								console.log("Error");
+						}
+					});
 				break;
 			case "Role":
 				console.log("Add Role");

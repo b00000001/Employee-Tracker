@@ -14,6 +14,7 @@ const inquirerMainPrompt = () => {
 		handleMenuChoices(res);
 	});
 };
+// This function gathers menu options and directs you to the correct function in menuFunctions.js
 const handleMenuChoices = (res) => {
 	switch (res.menuChoice) {
 		case "View Menu":
