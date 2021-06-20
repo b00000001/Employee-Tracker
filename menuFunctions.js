@@ -62,6 +62,17 @@ const viewMenu = (mainMenu) => {
 								Add Menu
 */
 const addMenu = (mainMenu) => {
+	const getId = (res) => {
+		connection.query(
+			"SELECT id FROM employee.department WHERE SET ?",
+			{ name: res.selectedDepartment },
+			(err, res) => {
+				if (err) throw err;
+				console.log(res);
+				return res;
+			}
+		);
+	};
 	inquirer.prompt(addMenuPrompt).then((res) => {
 		switch (res.typeToAdd) {
 			case "Employee":
@@ -82,9 +93,9 @@ const addMenu = (mainMenu) => {
 									const newEmployee = new Employee(
 										res.managerFirstName,
 										res.managerLastName,
-										res.selectedDepartment,
-										1000,
-										15
+										getId(res), // dept ID
+										10, //role ID
+										1 // mgr ID
 									);
 									// newEmployee.getDepartment(); //to output the role ID
 									newEmployee.addToDb();

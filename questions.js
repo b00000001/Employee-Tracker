@@ -7,9 +7,9 @@ const connection = mysql.createConnection({
 	database: "employee",
 });
 
-const getDeptArray = () => {
+const getDeptNameArray = () => {
 	const deptArr = [];
-	connection.query("SELECT name FROM employee.department", (err, res) => {
+	connection.query("SELECT name, id FROM employee.department", (err, res) => {
 		for (department of res) {
 			deptArr.push(department.name);
 		}
@@ -68,7 +68,7 @@ const managerQuestions = [
 		type: "list",
 		name: "selectedDepartment",
 		message: "Of what department?",
-		choices: getDeptArray(), // an array with all of the departments.
+		choices: getDeptNameArray(), // an array with all of the departments.
 	},
 	{
 		type: "input",
