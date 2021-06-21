@@ -8,6 +8,7 @@ const connection = mysql.createConnection({
 });
 
 const idNum = [];
+const roleId = [];
 const getDeptNameArray = () => {
 	const deptArr = [];
 	connection.query("SELECT name, id FROM employee.department", (err, res) => {
@@ -20,7 +21,7 @@ const getDeptNameArray = () => {
 };
 const getRoleNameArray = () => {
 	const roleNames = [];
-	connection.query("SELECT title FROM employee.role", (err, res) => {
+	connection.query("SELECT title, id FROM employee.role", (err, res) => {
 		for (role of res) {
 			roleNames.push(role.title);
 		}
@@ -28,6 +29,31 @@ const getRoleNameArray = () => {
 	return roleNames;
 };
 
+const getRoleIdNum = (res) => {
+	connection.query(
+		`SELECT id FROM employee.role WHERE title='${res}'`,
+		(err, res) => {
+			roleId.push(res[0].id);
+		}
+	);
+	res === "Manager" ? null : getManagerId();
+};
+const getManagerId = () => {
+	connection.query(`SELECT id FROM Employee WHERE SET`, {}, () => {});
+};
+const getManagerArray = () => {
+	const managerNames = [];
+	connection.query(
+		"SELECT first_name, last_name FROM employee WHERE manager_id=0",
+		(err, res) => {
+			console.log(res);
+			for (manager of res) {
+				managerNames.push(`${manager.first_name} ${manager.last_name}`);
+			}
+		}
+	);
+	return managerNames;
+};
 const menuChoices = [
 	{
 		type: "list",
@@ -74,25 +100,6 @@ const addDepartment = [
 	},
 ];
 
-const managerQuestions = [
-	{
-		type: "list",
-		name: "selectedDepartment",
-		message: "Of what department?",
-		choices: getDeptNameArray(), // an array with all of the departments.
-	},
-	{
-		type: "input",
-		name: "managerFirstName",
-		message: "Please enter manager first name:",
-	},
-	{
-		type: "input",
-		name: "managerLastName",
-		message: "Please enter manager last name:",
-	},
-];
-
 const employeeQuestions = [
 	{
 		type: "list", //
@@ -116,15 +123,26 @@ const employeeQuestions = [
 		message: "Please select your role",
 		choices: getRoleNameArray(), // an array with all of the roles
 	},
+	{
+		type: "list",
+		name: "employeeMgrName",
+		message: "Who is your manager?",
+		choices: getManagerArray(),
+		when(answers) {
+			return answers.employeeRole !== "Manager";
+		},
+	},
 ];
 
 module.exports = {
+	idNum,
 	menuChoices,
+	getRoleIdNum,
+	getManagerId,
+	roleId,
 	viewMenuPrompts,
-	managerQuestions,
 	employeeQuestions,
 	addMenuPrompt,
 	addRole,
-	idNum,
 	addDepartment,
 };

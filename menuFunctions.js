@@ -3,12 +3,15 @@ const mysql = require("mysql");
 const { Employee } = require("./employee");
 const {
 	// Imports different variables that hold question sets.
-	menuChoices,
 	viewMenuPrompts,
 	addMenuPrompt,
+	getRoleIdNum,
+	getManagerId,
+	roleId,
 	idNum,
 	managerQuestions,
 	employeeQuestions,
+	internQuestions,
 	addRole,
 	addDepartment,
 } = require("./questions");
@@ -66,53 +69,55 @@ const addMenu = (mainMenu) => {
 	inquirer.prompt(addMenuPrompt).then((res) => {
 		switch (res.typeToAdd) {
 			case "Employee":
-				inquirer
-					.prompt([
-						{
-							type: "list",
-							name: "employeeChoice",
-							message: "Please enter the type of employee you wish to add.",
-							choices: ["Employee", "Manager", "Intern", "Back"],
-						},
-					])
-					.then((res) => {
-						switch (res.employeeChoice) {
-							case "Manager":
-								inquirer.prompt(managerQuestions).then((res) => {
-									const newEmployee = new Employee(
-										res.firstName,
-										res.lastName,
-										10,
-										idNum[0],
-										5
-									);
-									console.log(newEmployee);
-									addMenu(mainMenu);
-								});
-								break;
-							case "Intern":
-								console.log("Add Employee Intern type");
-								break;
-							case "Employee":
-								inquirer.prompt(employeeQuestions).then((res) => {
-									const newEmployee = new Employee(
-										res.employeeFirstName,
-										res.employeeLastName,
-										role,
-										idNum[0],
-										0
-									);
-									console.log(newEmployee);
-									addMenu(mainMenu);
-								});
-								break;
-							case "Back":
-								addMenu(mainMenu);
-								break;
-							default:
-								console.log("Error");
-						}
-					});
+				switch (res.typeToAdd) {
+					case "Employee":
+						getRoleIdNum(res.typeToAdd);
+						inquirer.prompt(employeeQuestions).then((res) => {
+							console.log(res);
+							const newEmployee = new Employee(
+								res.managerFirstName,
+								res.managerLastName,
+								roleId[0],
+								idNum[0],
+								res.employeeMgrName ? getManagerId() : 0
+							);
+							// newEmployee.addToDb();
+							console.log(newEmployee);
+							addMenu(mainMenu);
+						});
+						break;
+					// case "Intern":
+					// 	getRoleIdNum(res.employeeChoice, "notMgr");
+					// 	inquirer.prompt(internQuestions).then((res) => {
+					// 		const newEmployee = new Employee(
+					// 			res.internFirstName,
+					// 			res.internLastName,
+					// 			roleId[0],
+					// 			idNum[0],
+					// 			5
+					// 		);
+					// 		addMenu(mainMenu);
+					// 	});
+					// 	break;
+					// case "Employee":
+					// 	getRoleIdNum(res.employeeChoice, "notMgr");
+					// 	inquirer.prompt(employeeQuestions).then((res) => {
+					// 		const newEmployee = new Employee(
+					// 			res.employeeFirstName,
+					// 			res.employeeLastName,
+					// 			roleId[0],
+					// 			idNum[0],
+					// 			0
+					// 		);
+					// 		addMenu(mainMenu);
+					// 	});
+					// 	break;
+					case "Back":
+						addMenu(mainMenu);
+						break;
+					default:
+						console.log("Error");
+				}
 				break;
 			case "Role":
 				console.log("Add Role");
