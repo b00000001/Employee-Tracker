@@ -20,16 +20,6 @@ class Employee {
 			}
 		);
 	}
-	getDepartment() {
-		this.connection.query(
-			"SELECT id FROM employee.department WHERE SET ?",
-			{ title: this.department },
-			(err, res) => {
-				if (err) throw err;
-				console.table(res);
-			}
-		);
-	}
 }
 
 module.exports = { Employee };

@@ -7,14 +7,25 @@ const connection = mysql.createConnection({
 	database: "employee",
 });
 
+const idNum = [];
 const getDeptNameArray = () => {
 	const deptArr = [];
 	connection.query("SELECT name, id FROM employee.department", (err, res) => {
 		for (department of res) {
 			deptArr.push(department.name);
+			idNum.push(department.id);
 		}
 	});
 	return deptArr;
+};
+const getRoleNameArray = () => {
+	const roleNames = [];
+	connection.query("SELECT title FROM employee.role", (err, res) => {
+		for (role of res) {
+			roleNames.push(role.title);
+		}
+	});
+	return roleNames;
 };
 
 const menuChoices = [
@@ -82,11 +93,38 @@ const managerQuestions = [
 	},
 ];
 
+const employeeQuestions = [
+	{
+		type: "list", //
+		name: "selectedDepartment",
+		message: "Of what department?",
+		choices: getDeptNameArray(), // an array with all of the departments.
+	},
+	{
+		type: "input",
+		name: "employeeFirstName",
+		message: "Please enter employee first name",
+	},
+	{
+		type: "input",
+		name: "employeeLastName",
+		message: "Please enter employee last name",
+	},
+	{
+		type: "list",
+		name: "employeeRole",
+		message: "Please select your role",
+		choices: getRoleNameArray(), // an array with all of the roles
+	},
+];
+
 module.exports = {
 	menuChoices,
 	viewMenuPrompts,
 	managerQuestions,
+	employeeQuestions,
 	addMenuPrompt,
 	addRole,
+	idNum,
 	addDepartment,
 };

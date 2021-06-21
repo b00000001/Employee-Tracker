@@ -6,8 +6,9 @@ const {
 	menuChoices,
 	viewMenuPrompts,
 	addMenuPrompt,
-	addEmployeePrompt,
+	idNum,
 	managerQuestions,
+	employeeQuestions,
 	addRole,
 	addDepartment,
 } = require("./questions");
@@ -62,17 +63,6 @@ const viewMenu = (mainMenu) => {
 								Add Menu
 */
 const addMenu = (mainMenu) => {
-	const getId = (res) => {
-		connection.query(
-			"SELECT id FROM employee.department WHERE SET ?",
-			{ name: res.selectedDepartment },
-			(err, res) => {
-				if (err) throw err;
-				console.log(res);
-				return res;
-			}
-		);
-	};
 	inquirer.prompt(addMenuPrompt).then((res) => {
 		switch (res.typeToAdd) {
 			case "Employee":
@@ -89,17 +79,14 @@ const addMenu = (mainMenu) => {
 						switch (res.employeeChoice) {
 							case "Manager":
 								inquirer.prompt(managerQuestions).then((res) => {
-									console.log(res);
 									const newEmployee = new Employee(
-										res.managerFirstName,
-										res.managerLastName,
-										getId(res), // dept ID
-										10, //role ID
-										1 // mgr ID
+										res.firstName,
+										res.lastName,
+										10,
+										idNum[0],
+										5
 									);
-									// newEmployee.getDepartment(); //to output the role ID
-									newEmployee.addToDb();
-									console.log("Successfully Added Manager");
+									console.log(newEmployee);
 									addMenu(mainMenu);
 								});
 								break;
@@ -107,8 +94,17 @@ const addMenu = (mainMenu) => {
 								console.log("Add Employee Intern type");
 								break;
 							case "Employee":
-								console.log("Add Employee default type");
-								addMenu(mainMenu);
+								inquirer.prompt(employeeQuestions).then((res) => {
+									const newEmployee = new Employee(
+										res.employeeFirstName,
+										res.employeeLastName,
+										role,
+										idNum[0],
+										0
+									);
+									console.log(newEmployee);
+									addMenu(mainMenu);
+								});
 								break;
 							case "Back":
 								addMenu(mainMenu);
@@ -154,7 +150,6 @@ const deleteMenu = (mainMenu) => {
 		for (employee of res) {
 			employeeArray.push(`Name: ${employee.first_name}, ID: ${employee.id}`);
 		}
-		console.log(employeeArray);
 		inquirer
 			.prompt([
 				{
