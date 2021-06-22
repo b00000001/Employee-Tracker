@@ -28,25 +28,39 @@ const getRoleNameArray = () => {
 	});
 	return roleNames;
 };
-
-const getRoleIdNum = (res) => {
+const roleQuery = (res) => {
 	connection.query(
-		`SELECT id FROM employee.role WHERE title='${res}'`,
+		`SELECT id FROM employee.role WHERE title='${res.employeeRole}'`,
 		(err, res) => {
-			roleId.push(res[0].id);
+			getRoleIdNum(res[0].id);
 		}
 	);
-	res === "Manager" ? null : getManagerId();
 };
-const getManagerId = () => {
-	connection.query(`SELECT id FROM Employee WHERE SET`, {}, () => {});
+
+const getRoleIdNum = (res) => {
+	roleId.push(res);
+	// res === "Manager" ? null : getManagerId();
+};
+
+const getManagerId = (mgrName) => {
+	console.log("Mgr Name", mgrName, typeof mgrName);
+	// mgrName = mgrName.split(" ");
+	// connection.query(
+	// 	`SELECT id FROM Employee WHERE SET`,
+	// 	{
+	// 		first_name: mgrName[0],
+	// 		last_name: mgrName[1],
+	// 	},
+	// 	(err, res) => {
+	// 		console.log(res);
+	// 	}
+	// );
 };
 const getManagerArray = () => {
 	const managerNames = [];
 	connection.query(
 		"SELECT first_name, last_name FROM employee WHERE manager_id=0",
 		(err, res) => {
-			console.log(res);
 			for (manager of res) {
 				managerNames.push(`${manager.first_name} ${manager.last_name}`);
 			}
@@ -138,6 +152,7 @@ module.exports = {
 	idNum,
 	menuChoices,
 	getRoleIdNum,
+	roleQuery,
 	getManagerId,
 	roleId,
 	viewMenuPrompts,

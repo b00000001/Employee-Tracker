@@ -8,6 +8,7 @@ const {
 	getRoleIdNum,
 	getManagerId,
 	roleId,
+	roleQuery,
 	idNum,
 	managerQuestions,
 	employeeQuestions,
@@ -71,47 +72,18 @@ const addMenu = (mainMenu) => {
 			case "Employee":
 				switch (res.typeToAdd) {
 					case "Employee":
-						getRoleIdNum(res.typeToAdd);
 						inquirer.prompt(employeeQuestions).then((res) => {
-							console.log(res);
 							const newEmployee = new Employee(
-								res.managerFirstName,
-								res.managerLastName,
-								roleId[0],
+								res.employeeFirstName,
+								res.employeeLastName,
+								0,
 								idNum[0],
-								res.employeeMgrName ? getManagerId() : 0
+								0
 							);
-							// newEmployee.addToDb();
-							console.log(newEmployee);
+							newEmployee.addToDb();
 							addMenu(mainMenu);
 						});
 						break;
-					// case "Intern":
-					// 	getRoleIdNum(res.employeeChoice, "notMgr");
-					// 	inquirer.prompt(internQuestions).then((res) => {
-					// 		const newEmployee = new Employee(
-					// 			res.internFirstName,
-					// 			res.internLastName,
-					// 			roleId[0],
-					// 			idNum[0],
-					// 			5
-					// 		);
-					// 		addMenu(mainMenu);
-					// 	});
-					// 	break;
-					// case "Employee":
-					// 	getRoleIdNum(res.employeeChoice, "notMgr");
-					// 	inquirer.prompt(employeeQuestions).then((res) => {
-					// 		const newEmployee = new Employee(
-					// 			res.employeeFirstName,
-					// 			res.employeeLastName,
-					// 			roleId[0],
-					// 			idNum[0],
-					// 			0
-					// 		);
-					// 		addMenu(mainMenu);
-					// 	});
-					// 	break;
 					case "Back":
 						addMenu(mainMenu);
 						break;
@@ -120,9 +92,7 @@ const addMenu = (mainMenu) => {
 				}
 				break;
 			case "Role":
-				console.log("Add Role");
 				inquirer.prompt(addRole).then((res) => {
-					console.log("Add Role", res);
 					const newRole = new Role(res.roleToAdd, res.roleSalary);
 					newRole.addToDb(res);
 					addMenu(mainMenu);
