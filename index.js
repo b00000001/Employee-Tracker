@@ -1,6 +1,5 @@
 console.log("Hello");
 const inquirer = require("inquirer");
-const inquire = require("inquirer");
 const { viewMenu, addMenu, deleteMenu } = require("./menuFunctions");
 const { menuChoices } = require("./questions");
 const mysql = require("mysql");
